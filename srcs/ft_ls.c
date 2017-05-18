@@ -6,7 +6,7 @@
 /*   By: apissier <apissier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/17 12:05:54 by apissier          #+#    #+#             */
-/*   Updated: 2017/05/18 17:35:47 by apissier         ###   ########.fr       */
+/*   Updated: 2017/05/18 18:29:49 by apissier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ static void				ft_ls_no_arg(t_flag b)
 	liste = ft_check_sort(liste, b);
 	ft_printlist(liste, b);
 }
-
+/*
 static t_flag				ft_get_flag(char **av, t_flag b, int i)
 {
 	int				y;
@@ -117,18 +117,40 @@ static t_flag				ft_get_flag(char **av, t_flag b, int i)
 	}
 	return (b);
 }
+*/
+
+static void			ft_get_flags(char *flags, char *format)
+{
+	int				flags_count;
+	
+	flags_count = ft_strlen(flags);
+	while (*format)
+	{
+		if (ft_strchr(LS_FLAGS, *format))
+		{
+			if (!(ft_strchr(flags, *format)))
+				flags[flags_count++] = *format;
+		}
+		else
+			printf("error"); //gerer les erreurs avec un ft_error
+		format++;
+	}
+} 
 
 int					main(int ac, char **av)
 {
 	int				i;
+	char			flags[ft_strlen(LS_FLAGS) + 1];
 	t_flag			b;
 	
 	i = 1;
-	b = (t_flag){0, 0, 0, 0, 0, 0, 0};
+	ft_bzero(&flags, ft_strlen(LS_FLAGS) + 1)
+	//b = (t_flag){0, 0, 0, 0, 0, 0, 0};
 	while (av[i])
     {
-		if (av[i][0] == '-')
-			b = ft_get_flag(av, b, i);
+		if (av[i][0] == '-' && av[i][1])
+			ft_get_flags(flags, av[i + 1]);
+			//b = ft_get_flag(av, b, i);
 		else
 			break ;
 		i++;

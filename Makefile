@@ -6,7 +6,7 @@
 #    By: apissier <apissier@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/03/07 10:36:13 by apissier          #+#    #+#              #
-#    Updated: 2017/05/15 16:10:47 by apissier         ###   ########.fr        #
+#    Updated: 2017/05/18 11:10:13 by apissier         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -28,7 +28,8 @@ LOG_WHITE       = \033[1;37m
 NAME = libftls.a
 FLAGS = -Wall -Werror -Wextra
 LIB = ./libft/libft.a
-SRCS_NAME = testfunc.c
+SRCS_NAME = ft_ls.c \
+			ft_sort.c
 
 SRCS_PATH		=		srcs/
 SRCS			=		$(addprefix $(SRCS_PATH), $(SRCS_NAME))

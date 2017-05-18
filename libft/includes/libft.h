@@ -6,7 +6,7 @@
 /*   By: apissier <apissier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/23 17:25:29 by apissier          #+#    #+#             */
-/*   Updated: 2017/04/11 16:10:58 by apissier         ###   ########.fr       */
+/*   Updated: 2017/05/18 15:34:34 by apissier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <string.h>
+# include <stdarg.h>
 
 typedef struct		s_list
 {
@@ -22,6 +23,23 @@ typedef struct		s_list
 	size_t			content_size;
 	struct s_list	*next;
 }					t_list;
+
+typedef struct		s_flags
+{
+	int				width;
+	int				precision;
+	int				lenght;
+	int				sharp;
+	int				zero;
+	int				blank;
+	int				minus;
+	int				plus;
+	int				letter;
+	int				h;
+	int				l;
+	int				j;
+	int				z;
+}					t_flags;
 
 int					ft_atoi(const char *nptr);
 int					ft_isalpha(int c);
@@ -74,14 +92,8 @@ char				*ft_strsub(char const *s, unsigned int start, size_t len);
 char				*ft_strjoin(char const *s1, char const *s2);
 char				*ft_strjoinfree(char *s1, char *s2);
 char				*ft_strjoinffree(char *s1, char *s2);
-t_list				*ft_lstnew(void const *content, size_t content_size);
 char				*ft_itoa(int n);
 char				**ft_strsplit(char const *s, char c);
-void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));
-t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
-void				ft_lstdelone(t_list **alst, void (*del)(void*, size_t));
-void				ft_lstdel(t_list **alst, void (*del)(void *, size_t));
-void				ft_lstadd(t_list **alst, t_list *new);
 char				*ft_strtrim(char const *s);
 void				ft_striteri(char *s, void (*f)(unsigned int, char *));
 void				ft_swap(int *a, int *b);
@@ -89,5 +101,46 @@ int					ft_isspace(int c);
 char				*ft_strrev(char *str);
 void				*ft_realloc(void *ptr, size_t cur_size, size_t new_size);
 void				ft_write_null(void);
+int					ft_sort_ascii(char *a, char *b);
+void                ft_lstiter(t_list *lst, void (*f)(t_list *elem));
+void                ft_lstdelone(t_list **alst, void (*del)(void*, size_t));
+void                ft_lstdel(t_list **alst, void (*del)(void *, size_t));
+void                ft_lstadd(t_list **alst, t_list *new);
+t_list              *ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
+t_list              *ft_lstnew(void const *content, size_t content_size);
+void				ft_lstaddend(t_list **alst, t_list *new);
+
+int					ft_printf(const char *format, ...);
+int					ft_printf_char(va_list ap, t_flags b, char i);
+int					ft_printf_hexa(va_list ap, t_flags b, char i);
+int					ft_printf_octal(va_list ap, t_flags b, char i);
+int					ft_printf_unsigned(va_list ap, t_flags b, char i);
+int					ft_printf_percent(t_flags b);
+int					ft_printf_pointer(va_list ap, t_flags b);
+int					ft_printf_string(va_list ap, t_flags b, char i);
+int					ft_check_letter(va_list ap, char i, t_flags b);
+t_flags				ft_check_modifier(char i, char j, t_flags b);
+t_flags				ft_check_flags(char i, t_flags b);
+intmax_t			ft_length_modifier_signed(va_list ap, t_flags b);
+uintmax_t			ft_lenght_modifier_unsigned(va_list ap, t_flags b);
+int					ft_printf_di(va_list ap, char i, t_flags b);
+int					ft_modifier(char i);
+int					ft_flags(char i);
+char				*ft_unicode(wchar_t wc);
+char				*ft_itoa_intmax(intmax_t n);
+char				*ft_check_if_flags_int(t_flags b, char *str);
+char				*ft_check_if_flags_str(t_flags b, char *str);
+char				*ft_join_flags_int(t_flags b, char *str);
+char				*ft_size_prec_int(t_flags b, char *str);
+char				*ft_size_prec_str(t_flags b, char *str);
+char				*ft_size_prec_uni(t_flags b, char *str);
+char				*ft_size_lenght_int(t_flags b, char *str);
+char				*ft_size_lenght_str(t_flags b, char *str);
+char				*ft_join_lenght_int(t_flags b, char *tmp, char *str);
+char				*ftf_join_flags(char *str, t_flags b, char *tmp);
+char				*ft_is_plus(t_flags b, char *str, size_t negative);
+char				*ft_is_blank(t_flags b, char *str, size_t negative);
+char				*ft_strchar(char c, size_t size);
+int					ft_free_return(char **str);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: apissier <apissier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/23 17:25:29 by apissier          #+#    #+#             */
-/*   Updated: 2017/05/18 15:34:34 by apissier         ###   ########.fr       */
+/*   Updated: 2017/05/23 10:20:15 by apissier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,19 @@
 # include <stdlib.h>
 # include <string.h>
 # include <stdarg.h>
+# include <string.h>
+# include <fcntl.h>
+# include <sys/stat.h>
+# include <sys/types.h>
+
+# define BUFF_SIZE 10
+
+typedef struct		s_fd
+{
+	int				n_fd;
+	char			*str;
+	struct s_fd		*next;
+}					t_fd;
 
 typedef struct		s_list
 {
@@ -90,6 +103,7 @@ int					ft_strequ(char const *s1, char const *s2);
 int					ft_strnequ(char const *s1, char const *s2, size_t n);
 char				*ft_strsub(char const *s, unsigned int start, size_t len);
 char				*ft_strjoin(char const *s1, char const *s2);
+char				*ft_strnjoin(int n, ...);
 char				*ft_strjoinfree(char *s1, char *s2);
 char				*ft_strjoinffree(char *s1, char *s2);
 char				*ft_itoa(int n);
@@ -102,6 +116,7 @@ char				*ft_strrev(char *str);
 void				*ft_realloc(void *ptr, size_t cur_size, size_t new_size);
 void				ft_write_null(void);
 int					ft_sort_ascii(char *a, char *b);
+int					ft_sort_r_ascii(char *a, char*b);
 void                ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 void                ft_lstdelone(t_list **alst, void (*del)(void*, size_t));
 void                ft_lstdel(t_list **alst, void (*del)(void *, size_t));
@@ -142,5 +157,6 @@ char				*ft_is_plus(t_flags b, char *str, size_t negative);
 char				*ft_is_blank(t_flags b, char *str, size_t negative);
 char				*ft_strchar(char c, size_t size);
 int					ft_free_return(char **str);
+int					get_next_line(const int fd, char **line);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: apissier <apissier@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/03/07 10:36:13 by apissier          #+#    #+#              #
-#    Updated: 2017/05/18 11:10:13 by apissier         ###   ########.fr        #
+#    Updated: 2017/05/31 11:59:39 by apissier         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -25,11 +25,11 @@ LOG_VIOLET      = \033[1;35m
 LOG_CYAN        = \033[1;36m
 LOG_WHITE       = \033[1;37m
 
-NAME = libftls.a
+NAME = libft_ls.a
 FLAGS = -Wall -Werror -Wextra
 LIB = ./libft/libft.a
-SRCS_NAME = ft_ls.c \
-			ft_sort.c
+SRCS_NAME = ft_sort.c \
+			ft_get_info.c
 
 SRCS_PATH		=		srcs/
 SRCS			=		$(addprefix $(SRCS_PATH), $(SRCS_NAME))
@@ -38,12 +38,7 @@ OBJ_PATH		=		obj/
 OBJ				=		$(addprefix $(OBJ_PATH), $(OBJ_NAME))
 INC				=		./includes/
 
-#COLORS
-C_GREEN			=	"\033[33m"
-C_END			= 	"\033[0m"
-
-#MESSAGE
-SUCCESS			=	SUCCESS$(C_END)
+SUCCESS			=	SUCCESS$(LOG_NOCOLOR)
 
 all: $(NAME)
 
@@ -51,31 +46,30 @@ $(NAME): $(OBJ)
 	@echo "$(LOG_CLEAR)$(LOG_BLUE)Make Libft in progress...$(LOG_NOCOLOR)$(LOG_UP)"
 	@make -C ./libft/
 	@cp libft/libft.a ./$(NAME)
-	@echo "$(LOG_CLEAR)$(LOG_GREEN)Make Libft done$(LOG_NOCOLOR)"
 	@ar rc $(NAME) $(OBJ)
 	@ranlib $(NAME)
-	@echo "$(LOG_CLEAR)$(LOG_GREEN)  $@ compilation done$(LOG_NOCOLOR)"
+	@echo "$(LOG_CLEAR)$(LOG_GREEN)  $@ [compilation success]$(LOG_NOCOLOR)"
 
 $(OBJ_PATH)%.o: $(SRCS_PATH)%.c
 	@mkdir -p obj
 	@echo "$(LOG_CLEAR)$(LOG_BLUE)$@ compilation in progress...$(LOG_NOCOLOR)$(LOG_UP)"
 	@gcc -c $(FLAGS) -I $(INC) $< -o $@
-	@echo "$(LOG_CLEAR)$(LOG_GREEN)  $@ compilation done$(LOG_NOCOLOR)$(LOG_UP)"
+	@echo "$(LOG_CLEAR)$(LOG_GREEN)  $@ [compilation success]$(LOG_NOCOLOR)$(LOG_UP)"
 
 exe:
 		@make -C ./libft/
-		@cc $(SRCS) ./srcs/testfunc.c $(LIB) -o ft_ls
-		@echo "$(LOG_CLEAR)$(C_GREEN)"Compiling" [ ft_ls ] $(SUCCESS)"
+		@cc $(SRCS) ./srcs/ft_ls.c $(LIB) -o ft_ls
+		@echo "$(LOG_CLEAR)$(LOG_GREEN)"Compiling" [ ft_ls ] $(SUCCESS)"
 		@./ft_ls
 
 clean:	
 	@make -C ./libft/ fclean
 	@/bin/rm -rf $(OBJ_PATH)
-	@echo "$(LOG_CLEAR)$(LOG_RED)Clean done$(LOG_NOCOLOR)"
+	@echo "$(LOG_CLEAR)ft_ls : $(LOG_RED)Clean -> $(LOG_GREEN)[done]$(LOG_NOCOLOR)"
 
 fclean: clean
 	@/bin/rm -rf $(NAME)
-	@echo "$(LOG_CLEAR)$(LOG_CLEAR)$(LOG_RED)Fclean done$(LOG_NOCOLOR)"
+	@echo "$(LOG_CLEAR)$(LOG_CLEAR)ft_ls : $(LOG_RED)Fclean -> $(LOG_GREEN)[done]$(LOG_NOCOLOR)"
 
 re: fclean all
 

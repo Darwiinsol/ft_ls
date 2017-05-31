@@ -6,7 +6,7 @@
 #    By: apissier <apissier@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/23 17:55:27 by apissier          #+#    #+#              #
-#    Updated: 2017/05/18 14:36:42 by apissier         ###   ########.fr        #
+#    Updated: 2017/05/23 10:23:54 by apissier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,6 +60,7 @@ SRC_NAME = ft_atoi.c \
 	ft_putstr.c \
 	ft_putstr_fd.c \
 	ft_sort_ascii.c \
+	ft_sort_r_ascii.c \
 	ft_strcat.c \
 	ft_strchr.c \
 	ft_strclr.c \
@@ -71,6 +72,7 @@ SRC_NAME = ft_atoi.c \
 	ft_striter.c \
 	ft_striteri.c \
 	ft_strjoin.c \
+	ft_strnjoin.c \
 	ft_strjoinffre.c \
 	ft_strjoinfree.c \
 	ft_strlcat.c \
@@ -117,7 +119,8 @@ SRC_NAME = ft_atoi.c \
     ft_printf_pointer.c \
     ft_printf_string.c \
     ft_free_return.c \
-    ft_printf_di.c
+    ft_printf_di.c \
+	get_next_line.c
 
 SRCS_PATH       =       srcs/
 SRCS            =       $(addprefix $(SRCS_PATH), $(SRC_NAME))
@@ -132,21 +135,21 @@ $(NAME): $(OBJ)
 		@echo "$(LOG_CLEAR)$(LOG_BLUE)Make Libft in progress...$(LOG_NOCOLOR)$(LOG_UP)"
 	    @ar rcs $(NAME) $(OBJ)
 		@ranlib $(NAME)
-		@echo "$(LOG_CLEAR)$(LOG_GREEN)  $@ compilation done$(LOG_NOCOLOR)"
+		@echo "$(LOG_CLEAR)$(LOG_GREEN)  $@ [compilation success]$(LOG_NOCOLOR)"
 
 $(OBJ_PATH)%.o: $(SRCS_PATH)%.c
 		@mkdir -p obj
 		@echo "$(LOG_CLEAR)$(LOG_BLUE)$@ compilation in progress...$(LOG_NOCOLOR)$(LOG_UP)"
 		@gcc -c $(FLAGS) -I $(INC) $< -o $@
-		@echo "$(LOG_CLEAR)$(LOG_GREEN)  $@ compilation done$(LOG_NOCOLOR)$(LOG_UP)"
+		@echo "$(LOG_CLEAR)$(LOG_GREEN)  $@ [compilation success]$(LOG_NOCOLOR)$(LOG_UP)"
 
 clean:
 		@/bin/rm -rf $(OBJ_PATH)
-		@echo "$(LOG_CLEAR)$(LOG_RED)Clean done$(LOG_NOCOLOR)"
+		@echo "$(LOG_CLEAR)Libft : $(LOG_RED)Clean -> $(LOG_GREEN)[done]$(LOG_NOCOLOR)"
 
 fclean: clean
 		@/bin/rm -rf $(NAME)
-		@echo "$(LOG_CLEAR)$(LOG_CLEAR)$(LOG_RED)Fclean done$(LOG_NOCOLOR)"
+		@echo "$(LOG_CLEAR)$(LOG_CLEAR)Libft : $(LOG_RED)Fclean -> $(LOG_GREEN)[done]$(LOG_NOCOLOR)"
 
 re: fclean all
 

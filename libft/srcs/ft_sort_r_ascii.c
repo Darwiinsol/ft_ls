@@ -1,24 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_sort_ascii.c                                    :+:      :+:    :+:   */
+/*   ft_sort_r_ascii.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apissier <apissier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/05/18 14:33:11 by apissier          #+#    #+#             */
-/*   Updated: 2017/05/18 14:35:19 by apissier         ###   ########.fr       */
+/*   Created: 2017/05/19 11:06:01 by apissier          #+#    #+#             */
+/*   Updated: 2017/05/19 11:10:57 by apissier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 
-int			ft_sort_ascii(char *a, char *b)
+int			ft_sort_r_ascii(char *a, char*b)
 {
 	if (a && b)
 	{
-		if ((ft_strcmp(a, b)) > 0)
+		if ((ft_strcmp(a, b)) < 0)
 			return (0);
 	}
 	return (1);
 }
-

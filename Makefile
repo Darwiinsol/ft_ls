@@ -6,7 +6,7 @@
 #    By: apissier <apissier@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/03/07 10:36:13 by apissier          #+#    #+#              #
-#    Updated: 2017/06/07 15:30:19 by apissier         ###   ########.fr        #
+#    Updated: 2017/06/13 13:38:21 by apissier         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -58,7 +58,7 @@ $(OBJ_PATH)%.o: $(SRCS_PATH)%.c
 
 exe:
 		@make -C ./libft/
-		@cc $(SRCS) ./srcs/ft_ls.c $(LIB) -o ft_ls
+		@cc $(FLAGS) $(SRCS) ./srcs/ft_ls.c $(LIB) -o ft_ls
 		@echo "$(LOG_CLEAR)$(LOG_GREEN)"Compiling" [ ft_ls ] $(SUCCESS)"
 		@./ft_ls
 

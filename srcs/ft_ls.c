@@ -6,7 +6,7 @@
 /*   By: apissier <apissier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/17 12:05:54 by apissier          #+#    #+#             */
-/*   Updated: 2017/06/13 12:51:13 by apissier         ###   ########.fr       */
+/*   Updated: 2017/06/13 14:25:29 by apissier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static void				ft_printlist(t_list *content, char *flags)
 	}
 }
 
-t_list               *ft_check_sort(t_list *liste, char *flags, t_ls *info)
+t_list               *ft_check_sort(t_list *liste, char *flags)
 {
 	/*ft_l_case(liste, flags, info, path);*/ 
 	if (ft_strchr(flags, 'a') && ft_strchr(flags, 'r') && !(ft_strchr(flags, 't')))
@@ -102,6 +102,26 @@ t_list               *ft_check_sort(t_list *liste, char *flags, t_ls *info)
 	else
 		liste = ft_sort_by_ascii(liste);
 	return (liste);
+}
+
+void				ft_ls_arg(int ac, char **av, int i, char *flags)
+{
+	t_list			*liste;
+	t_list			*tmp;
+
+	liste = NULL;
+	tmp = NULL;
+	while (i < ac)
+	{
+		if (!(tmp = ft_lstnew(av[i], ft_strlen(av[i]) + 1)))
+			ft_get_error(0, 0);
+		if (!liste)
+			liste = tmp;
+		else
+			ft_lstaddend(&liste, tmp);
+		i++;
+	}
+	liste = ft_check_sort(liste, flags);
 }
 
 void				ft_ls_no_arg(char *flags)
@@ -133,7 +153,7 @@ void				ft_ls_no_arg(char *flags)
 	}
 //	if (ft_strchr(flags, 'l'))
 	//	ft_l_case(info, ft_strdup(infostruct->d_name), ft_strnjoin(3, path, "/", infostruct->d_name));
-	liste = ft_check_sort(liste, flags, info);
+	liste = ft_check_sort(liste, flags);
 	ft_printlist(liste, flags);
 }
 /*
@@ -199,8 +219,7 @@ int					main(int ac, char **av)
 		i++;
     }
 	if (i < ac)
-		return (0);
-//	ft_ls__arg(ac, av, &b, i);
+		ft_ls_arg(ac, av, i, flags);
 	else
 	{
 		//	if (ft_strchr(flags, 'l')

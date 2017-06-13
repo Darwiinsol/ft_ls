@@ -6,7 +6,7 @@
 /*   By: apissier <apissier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 17:16:00 by apissier          #+#    #+#             */
-/*   Updated: 2017/05/31 14:26:37 by apissier         ###   ########.fr       */
+/*   Updated: 2017/06/07 17:00:09 by apissier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,11 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <unistd.h>
-# include <errno.h> 
+# include <errno.h>
+# include <fcntl.h>
 # include <time.h>
+# include <sys/stat.h>
+# include <sys/types.h>
 # include "../libft/includes/libft.h"
 # define LS_FLAGS "larRt"
 # define FNMAXLEN 255
@@ -40,6 +43,7 @@ typedef struct			s_flag
 typedef struct			s_ls
 {
 	char		*name;
+	char		*user;
 	long		time;
 	int			links;
 	long long	size;
@@ -47,8 +51,8 @@ typedef struct			s_ls
 	char		*group;
 	char		linkpath;
 	char		mode[15];
-	
-}						t_ls;	
+
+}						t_ls;
 
 t_list					*ft_sort_by_ascii(t_list *liste);
 t_list					*ft_check_sort(t_list *liste, char *flags, t_ls *info);

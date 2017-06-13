@@ -104,6 +104,29 @@ t_list               *ft_check_sort(t_list *liste, char *flags, t_ls *info)
 	return (liste);
 }
 
+t_list				*ft_check_sort_arg(t_list *liste, char *flags)
+{
+	
+}
+
+void				ft_ls_arg(int ac, char **av, int i, char *flags)
+{
+	t_list			*liste;
+	t_list			*tmp;
+
+	while (i < ac)
+	{
+		if (!(tmp = ft_lstnew(av[i], ft_strlen(av[i]) + 1)))
+			ft_get_error(0, 0);
+		if (!liste)
+			liste = tmp;
+		else
+			ft_lstaddend(&liste, tmp);
+		i++;
+	}
+	liste = ft_check_sort_arg(liste, flags);
+}
+
 void				ft_ls_no_arg(char *flags)
 {
 	t_list			*liste;
@@ -199,8 +222,7 @@ int					main(int ac, char **av)
 		i++;
     }
 	if (i < ac)
-		return (0);
-//	ft_ls__arg(ac, av, &b, i);
+		ft_ls_arg(ac, av, i, flags);
 	else
 	{
 		//	if (ft_strchr(flags, 'l')

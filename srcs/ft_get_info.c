@@ -6,9 +6,10 @@
 /*   By: apissier <apissier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/31 11:20:16 by apissier          #+#    #+#             */
-/*   Updated: 2017/05/31 14:31:17 by apissier         ###   ########.fr       */
+/*   Updated: 2017/06/07 16:32:21 by apissier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../includes/ft_ls.h"
 
@@ -50,12 +51,12 @@ static int          ft_l_case_assist(t_ls *info)
 	ft_bzero(&buf, FNMAXLEN + 1);
 	cc = readlink('.', buf, FNAMXLEN);
 	info->linkpath = (cc == -1 : NULL ? ft_strdu(buf));
-	
+
 }
 */
 int					ft_get_info(t_ls *info, char *infostruct, const char *path)
 {
-	struct	stat	stats;
+	struct stat		stats;
 
 	lstat(path, &stats);
 	info->name = infostruct;
@@ -71,13 +72,15 @@ int                 ft_l_case(t_ls *info, char *infostruct, const char *path)
 
     lstat(path, &stats);
     modeguy(stats, info->mode);
+	  info->name = infostruct;
+	  //info->time = stats.st_mtime;
     info->links = stats.st_nlink;
     info->size = stats.st_size;
     info->blocks = stats.st_blocks;
     info->time = stats.st_mtime;
     pwd = getpwuid(stats.st_uid);
     grg = getgrgid(stats.st_gid);
-    info->name = ft_strdup(pwd->pw_name);
+    info->user = ft_strdup(pwd->pw_name);
     info->group = ft_strdup(grg->gr_name);
-    return (0);//ft_l_case_assist(info));
+    return (0);
 }

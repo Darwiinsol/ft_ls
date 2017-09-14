@@ -6,13 +6,13 @@
 /*   By: apissier <apissier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/17 12:05:54 by apissier          #+#    #+#             */
-/*   Updated: 2017/06/13 14:25:29 by apissier         ###   ########.fr       */
+/*   Updated: 2017/09/14 09:07:31 by apissier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
 
-static long				ft_get_error(int error, const char *letter)
+long				ft_get_error(int error, const char *letter)
 {
     if (error == 1)
     {
@@ -57,24 +57,24 @@ static char				*ft_cut(char *tmp)
 	return (tmp2);
 }
 
-static void				ft_printlist(t_list *content, char *flags)
+static void				ft_printlist(t_list *liste, char *flags)
 {
 	t_list	*tmp;
 	char	*tmp2;
 
-	tmp = content;
+	tmp = liste;
 	while (tmp)
-	{
+	{	
 		if ((ft_strchr(flags, 'l')) && (((t_ls*)tmp->content)->name[0]) != '.')
 		{
 			tmp2 = ((char *)ctime(&((t_ls*)tmp->content)->time));
-			ft_printf("%s %i %s %s %lld %s %s\n",((t_ls*)tmp->content)->mode, ((t_ls*)tmp->content)->links, ((t_ls*)tmp->content)->user, ((t_ls*)tmp->content)->group, ((t_ls*)tmp->content)->size, ft_cut(((char *)ctime(&((t_ls*)tmp->content)->time))), ((t_ls*)tmp->content)->name);	
+			ft_printf("%s %i %s %s %lld %s %s\n",((t_ls*)tmp->content)->mode, ((t_ls*)tmp->content)->links, ((t_ls*)tmp->content)->user, ((t_ls*)tmp->content)->group, ((t_ls*)tmp->content)->size, ft_cut(((char *)ctime(&((t_ls*)tmp->content)->time))), ((t_ls*)tmp->content)->name);
 		}
         else if ((ft_strchr(flags, 'l')) && ft_strchr(flags, 'a'))
         {
             tmp2 = ((char *)ctime(&((t_ls*)tmp->content)->time));
             ft_printf("%s %i %s %s %lld %s %s\n",((t_ls*)tmp->content)->mode, ((t_ls*)tmp->content)->links, ((t_ls*)tmp->content)->user, ((t_ls*)tmp->content)->group, ((t_ls*)tmp->content)->size, ft_cut(((char *)ctime(&((t_ls*)tmp->content)->time))), ((t_ls*)tmp->content)->name);
-			}
+		}
 		else if (ft_strchr(flags, 'a'))
 			ft_putendl((((t_ls*)tmp->content)->name));
         else
@@ -88,7 +88,7 @@ static void				ft_printlist(t_list *content, char *flags)
 
 t_list               *ft_check_sort(t_list *liste, char *flags)
 {
-	/*ft_l_case(liste, flags, info, path);*/ 
+	/*ft_l_case(liste, flags, info, path);*/
 	if (ft_strchr(flags, 'a') && ft_strchr(flags, 'r') && !(ft_strchr(flags, 't')))
 		liste = ft_sort_reverse(liste);
 	else if (ft_strchr(flags, 'r') && ft_strchr(flags, 't'))
@@ -102,6 +102,61 @@ t_list               *ft_check_sort(t_list *liste, char *flags)
 	else
 		liste = ft_sort_by_ascii(liste);
 	return (liste);
+}
+
+t_list				*ft_read_assist(const char *liste, const char *flags)
+{
+	t_list			*liste2;
+	t_list			*tmp;
+	t_ls			*info;
+	DIR				*path;
+	struct dirent	*infostruct;
+
+	liste2 = NULL;
+	path = opendir(liste);
+	if (path == NULL)
+		return (0); // ft_check_error ?
+	while ((infostruct = readdir(path)))
+	{
+		if (!(info = ft_memalloc(sizeof(t_ls))))
+			ft_get_error(0, 0);
+		if (ft_strchr(flags, 'l'))
+			ft_l_case(info, ft_strdup(infostruct->d_name), liste);
+		else
+		{
+			ft_get_info_arg(info, ft_strdup(infostruct->d_name), liste);
+			//ft_putendl(((t_ls *)tmp->content)->name);
+			//ft_putendl("yo");
+		}
+		if (!(tmp = ft_lstnew(info, sizeof(t_ls))))
+			ft_get_error(0, 0);
+		ft_memdel((void**)&info);
+		if (!liste2)
+			liste2 = tmp;
+		else
+			ft_lstaddend(&liste2, tmp);
+	}
+	(void)closedir(path);
+	return (liste2);
+}
+
+void			ft_read_lst(t_list *liste, char *flags)
+{
+	t_list			*tmp;
+	t_list			*files;
+	t_list          *tmp2;
+
+	tmp2 = liste;
+	while (tmp2)
+	{
+		tmp = ft_read_assist((char *)(tmp2->content), flags);
+		if (!files)
+			files = tmp;
+		else
+			ft_lstaddend(&files, tmp);
+		tmp2 = tmp2->next;
+	}
+	tmp2 = (files ? tmp2 : tmp2->next);
 }
 
 void				ft_ls_arg(int ac, char **av, int i, char *flags)
@@ -122,6 +177,8 @@ void				ft_ls_arg(int ac, char **av, int i, char *flags)
 		i++;
 	}
 	liste = ft_check_sort(liste, flags);
+	ft_read_lst(liste, flags);
+	ft_printlist(liste, flags);
 }
 
 void				ft_ls_no_arg(char *flags)
@@ -188,15 +245,14 @@ static void			ft_get_flags(char *flags, char *format)
 	flags_count = ft_strlen(flags);
 	while (*format)
 	{
-		format++;
 		if (ft_strchr(LS_FLAGS, *format))
 		{
 			if (!(ft_strchr(flags, *format)))
 				flags[flags_count++] = *format;
+			format++;
 		}
 		else
 			ft_get_error(1, (char[2]){(*format), '\0'});
-		//format++;
 	}
 } 
 

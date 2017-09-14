@@ -6,7 +6,7 @@
 /*   By: apissier <apissier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 17:16:00 by apissier          #+#    #+#             */
-/*   Updated: 2017/06/13 13:48:17 by apissier         ###   ########.fr       */
+/*   Updated: 2017/06/20 12:42:12 by apissier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,14 @@ typedef struct			s_ls
 
 }						t_ls;
 
+long					ft_get_error(int error, const char *letter);
 t_list					*ft_sort_by_ascii(t_list *liste);
 t_list					*ft_check_sort(t_list *liste, char *flags);
 t_list					*ft_sort_reverse(t_list *liste);
 t_list					*ft_sort_by_time(t_list *liste);
 t_list                  *ft_sort_reverse_time(t_list *liste);
-int						ft_get_info(t_ls *info, char *infostruct, const char *path);
+int						ft_get_info_arg(t_ls *info, char *infostruct, const char *path);
+int						ft_get_info(t_ls *info, char *infosstruct, const char *path);
 void					ft_ls_no_arg(char *flags);
 void					ft_ls_arg(int ac, char **av, int i, char *flags);
 //int						ft_l_case(/*t_list liste, char *flags,*/ t_ls *info);

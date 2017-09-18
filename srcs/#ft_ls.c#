@@ -6,7 +6,7 @@
 /*   By: apissier <apissier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/17 12:05:54 by apissier          #+#    #+#             */
-/*   Updated: 2017/09/18 15:41:26 by apissier         ###   ########.fr       */
+/*   Updated: 2017/09/15 09:44:56 by apissier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ long				ft_get_error(int error, const char *letter)
     }
     return (0);
 }
-/*
 static char				*ft_cut(char *tmp)
 {
 	int i;
@@ -56,8 +55,8 @@ static char				*ft_cut(char *tmp)
 	}
 	tmp2[j] = '\0';
 	return (tmp2);
-}*/
-/*
+}
+
 static void				ft_printlist(t_list *liste, char *flags)
 {
 	t_list	*tmp;
@@ -86,7 +85,7 @@ static void				ft_printlist(t_list *liste, char *flags)
 		tmp = tmp->next;
 	}
 }
-*/
+
 t_list               *ft_check_sort(t_list *liste, char *flags)
 {
 	/*ft_l_case(liste, flags, info, path);*/
@@ -104,37 +103,62 @@ t_list               *ft_check_sort(t_list *liste, char *flags)
 		liste = ft_sort_by_ascii(liste);
 	return (liste);
 }
-//ancienne ft_read_assist
-t_list				*ft_createandread_list(t_list *validarg, char *flags)
+
+t_list				*ft_read_assist(const char *liste, const char *flags)
 {
-	t_list			*newliste;
+	t_list			*liste2;
 	t_list			*tmp;
 	t_ls			*info;
 	DIR				*path;
 	struct dirent	*infostruct;
 
-	newliste = NULL;
-	if (!(path = opendir(validarg->content)))
-	{
-		ft_get_error(0, (char*)validarg->content);
-		return (newliste);
-	}
-		
+	liste2 = NULL;
+	path = opendir(liste);
+	if (path == NULL)
+		return (0); // ft_check_error ?
 	while ((infostruct = readdir(path)))
 	{
-		if (!(info = ft_memalloc(sizeof (t_ls))) || ft_get_info(info , validarg->content,
-		infostruct, flags) || !(tmp = ft_lstnew(info, sizeof(t_ls))))
+		if (!(info = ft_memalloc(sizeof(t_ls))))
 			ft_get_error(0, 0);
+		if (ft_strchr(flags, 'l'))
+			ft_l_case(info, ft_strdup(infostruct->d_name), liste);
 		else
 		{
-			ft_memdel((void**)&info);
-			ft_lstaddend(&newliste, tmp);
+			ft_get_info_arg(info, ft_strdup(infostruct->d_name), liste);
+			//ft_putendl(((t_ls *)tmp->content)->name);
+			//ft_putendl("yo");
 		}
+		if (!(tmp = ft_lstnew(info, sizeof(t_ls))))
+			ft_get_error(0, 0);
+		ft_memdel((void**)&info);
+		if (!liste2)
+			liste2 = tmp;
+		else
+			ft_lstaddend(&liste2, tmp);
 	}
 	(void)closedir(path);
-	return (newliste);
+	return (liste2);
 }
-/*
+
+void			ft_read_lst(t_list *liste, char *flags)
+{
+	t_list			*tmp;
+	t_list			*files;
+	t_list          *tmp2;
+
+	tmp2 = liste;
+	while (tmp2)
+	{
+		tmp = ft_read_assist((char *)(tmp2->content), flags);
+		if (!files)
+			files = tmp;
+		else
+			ft_lstaddend(&files, tmp);
+		tmp2 = tmp2->next;
+	}
+	tmp2 = (files ? tmp2 : tmp2->next);
+}
+
 void				ft_ls_arg(int ac, char **av, int i, char *flags)
 {
 	t_list			*liste;
@@ -156,7 +180,7 @@ void				ft_ls_arg(int ac, char **av, int i, char *flags)
 	ft_read_lst(liste, flags);
 	ft_printlist(liste, flags);
 }
-*/
+
 t_list				*ft_ls_no_arg(void)
 {
 	t_list			*tmp;
@@ -252,38 +276,28 @@ int					*ft_ls(char *flags, t_list *validarg)
 	int				foldername;
 	int				newline;
 	t_list			*tmp;
-	t_list			*print;
+	t_list			*toprint;
 
 	foldername = 0;
 	newline = 0;
+
 	if (validarg && validarg->next)
 		foldername = 1;
 	while (validarg && validarg != NULL)
-	{
 		if (newline == 1)
 			ft_putchar('\n');
-		if (foldername == 1)
-			ft_print_foldername((char*)validarg->content);
-		tmp = (ft_createandread_list(validarg, flags));
-		validarg = validarg->next;
-		newline = 1;
-		print = ft_check_sort(tmp, flags);
-		ft_print(print, flags);
-	}
-	return (0);
 }
+
 
 int					main(int ac, char **av)
 {
 	int				i;
-	int				avirer;
 	char			flags[ft_strlen(LS_FLAGS) + 1];
 	t_list			*arglist;
 	t_list			*validarg;
 //	t_flag			b;
 
 	i = 1;
-	avirer = 0;
 	arglist = NULL;
 	validarg = NULL;
 	ft_bzero(&flags, ft_strlen(LS_FLAGS) + 1);
@@ -292,15 +306,14 @@ int					main(int ac, char **av)
 	while (i < ac)
     {
 		if (av[i][0] == '-' && av[i][1])
-			ft_get_flags(flags, av[i] + 1);
+			ft_get_flags(flags, av[i]);
 //b = ft_get_flag(av, b, i);
 		else
 			break ;
 		i++;
     }
 	if (ft_strchr(flags, 'R'))
-		avirer++;
-		//ft_ls_R_parsing(flags, arglist);
+		ft_ls_R_parsing(flags, arglist);
 //	if (i < ac)
 		//	ft_ls_arg(ac, av, i, flags);
 	else

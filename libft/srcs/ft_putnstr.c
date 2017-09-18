@@ -1,28 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcat.c                                        :+:      :+:    :+:   */
+/*   ft_putnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apissier <apissier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/23 15:04:46 by apissier          #+#    #+#             */
-/*   Updated: 2017/09/15 10:07:31 by apissier         ###   ########.fr       */
+/*   Created: 2017/09/18 15:34:40 by apissier          #+#    #+#             */
+/*   Updated: 2017/09/18 15:36:54 by apissier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 
-char		*ft_strcat(char *dest, const char *src)
+void	ft_putnstr(char const *s, size_t n)
 {
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	while (dest[i])
-		i++;
-	while (src[j])
-		dest[i++] = src[j++];
-	dest[i] = '\0';
-	return (dest);
+	if (s != NULL)
+		write(1, s, n);
 }

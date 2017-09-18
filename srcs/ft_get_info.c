@@ -6,14 +6,14 @@
 /*   By: apissier <apissier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/31 11:20:16 by apissier          #+#    #+#             */
-/*   Updated: 2017/06/20 13:44:53 by apissier         ###   ########.fr       */
+/*   Updated: 2017/09/18 15:07:17 by apissier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../includes/ft_ls.h"
 
-static void     modeguy(struct stat stats, char *mode)
+static void     ft_modeguy(struct stat stats, char *mode)
 {
     if (S_ISCHR(stats.st_mode))
         *mode++ = 'c';
@@ -41,6 +41,20 @@ static void     modeguy(struct stat stats, char *mode)
     if (stats.st_mode & S_ISVTX)
         *mode = 't';
 }
+
+static void     ft_majorminor(struct stat *stats, t_ls *info)
+{
+    int         major;
+
+    major = stats->st_rdev;
+    if (stats->st_rdev)
+    {
+        while (major / 256 > 0)
+            major = major / 256;
+        info->size = stats->st_rdev % 256;
+        info->major = major;
+    }       
+} 
 /*
 static int          ft_l_case_assist(t_ls *info)
 {
@@ -54,50 +68,54 @@ static int          ft_l_case_assist(t_ls *info)
 
 }
 */
-int					ft_get_info(t_ls *info, char *infostruct, const char *path)
+int				    ft_get_info(t_ls *info, char *path, struct dirent *infostruct, char *flags)
 {
-	struct stat		stats;
+    struct stat     stats;
+    struct passwd   *psswd;
+    struct group    *grp;
 
-	if (lstat(path, &stats) == -1)
-		ft_get_error(0, 0);
-	info->name = infostruct;
-	info->time = stats.st_mtime;
-	return (0);
+    if (!path)
+       return ((int)ft_get_error(0, 0));
+    info->path = ft_strdup(path);
+    info->flags = flags; 
+    info->name = ft_strdup(infostruct->d_name);
+    if ((ft_strchr((const char*)flags, 't')) || (ft_strchr((const char *)flags, 'l')) 
+        || (ft_strchr((const char*)flags, 'S')))
+    {
+        if (lstat((ft_strjoinmulti("", path, "/", infostruct->d_name)), &stats) != '\0')
+            return (1);
+        else
+        {
+            ft_get_info_norm(stats, info, path, infostruct);
+            psswd = getpwuid(stats.st_uid);
+            grp = getgrgid(stats.st_gid);
+            info->owner = ft_strdup(psswd->pw_name);
+            info->group = ft_strdup(grp->gr_name);
+        }
+    }
+    return (0);
 }
 
-int					ft_get_info_arg(t_ls *info, char *infostruct, const char *path)
+void                ft_get_info_norm(struct stat stats, t_ls *info, char *path, struct dirent *infostruct)
 {
-	struct stat		stats;
-    char            *tmp;
-    char            *newpath;
+    char            buf[FNMAXLEN];
+    size_t          len;
 
-
-    tmp = ft_strjoin(path, "/");
-    newpath = ft_strjoin(tmp , infostruct);
-	if (lstat(newpath, &stats) == -1)
-        ft_get_error(0, 0);
-	info->name = ft_strdup(infostruct);
-	info->time = stats.st_mtime;
-	return (0);
-}
-
-int                 ft_l_case(t_ls *info, char *infostruct, const char *path)
-{
-    struct stat		stats;
-    struct passwd   *pwd;
-    struct group	*grg;
-
-    lstat(path, &stats);
-    modeguy(stats, info->mode);
-	  info->name = infostruct;
-	  //info->time = stats.st_mtime;
     info->links = stats.st_nlink;
     info->size = stats.st_size;
     info->blocks = stats.st_blocks;
     info->time = stats.st_mtime;
-    pwd = getpwuid(stats.st_uid);
-    grg = getgrgid(stats.st_gid);
-    info->user = ft_strdup(pwd->pw_name);
-    info->group = ft_strdup(grg->gr_name);
-    return (0);
+    info->atime = stats.st_atime;
+    info->ctime = stats.st_ctime;
+
+    if ((len = readlink(ft_strjoinmulti("", path, "/", infostruct->d_name), buf, sizeof(buf))) != (size_t)-1)
+    {
+        buf[len] = '\0';
+        info->readlink = ft_strdup(buf); 
+    }
+    ft_modeguy(stats, info->mode);
+    if ((S_ISCHR(stats.st_mode)) || (S_ISBLK(stats.st_mode)))
+        ft_majorminor(&stats, info);
+    else
+        info->major = -1;
 }

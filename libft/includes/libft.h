@@ -6,7 +6,7 @@
 /*   By: apissier <apissier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/23 17:25:29 by apissier          #+#    #+#             */
-/*   Updated: 2017/05/23 10:20:15 by apissier         ###   ########.fr       */
+/*   Updated: 2017/09/18 15:36:26 by apissier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,14 @@ char				*ft_strncpy(char *dest, const char *src, size_t n);
 char				*ft_strnstr(const char *a, const char *b, size_t len);
 char				*ft_strrchr(const char *s, int c);
 char				*ft_strstr(const char *mdf, const char *a);
+size_t          	ft_strcspn(const char *s1, char s2);
 int					ft_tolower(int c);
 int					ft_toupper(int c);
 void				ft_putnbr_fd(int n, int fd);
 void				ft_putstr_fd(char const *s, int fd);
 void				ft_putendl_fd(char const *s, int fd);
 void				ft_putendl(char const *s);
+void				ft_putnstr(char const *s, size_t n);
 void				*ft_memset(void *s, int c, size_t n);
 void				ft_bzero(void *s, size_t n);
 void				*ft_memcpy(void *dst, void *src, size_t n);
@@ -106,6 +108,7 @@ char				*ft_strjoin(char const *s1, char const *s2);
 char				*ft_strnjoin(int n, ...);
 char				*ft_strjoinfree(char *s1, char *s2);
 char				*ft_strjoinffree(char *s1, char *s2);
+char				*ft_strjoinmulti(char const *s1, char const *s2, char const *s3, char const *s4);
 char				*ft_itoa(int n);
 char				**ft_strsplit(char const *s, char c);
 char				*ft_strtrim(char const *s);

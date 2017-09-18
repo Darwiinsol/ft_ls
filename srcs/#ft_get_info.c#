@@ -57,7 +57,7 @@ static int          ft_l_case_assist(t_ls *info)
 int					ft_get_info(t_ls *info, char *infostruct, const char *path)
 {
 	struct stat		stats;
-	
+
 	if (lstat(path, &stats) == -1)
 		ft_get_error(0, 0);
 	info->name = infostruct;

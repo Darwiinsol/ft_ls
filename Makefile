@@ -1,4 +1,4 @@
-#******************************************************************************#
+# **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
@@ -6,9 +6,9 @@
 #    By: apissier <apissier@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/03/07 10:36:13 by apissier          #+#    #+#              #
-#    Updated: 2017/09/14 08:27:21 by apissier         ###   ########.fr        #
+#    Updated: 2017/09/18 15:08:51 by apissier         ###   ########.fr        #
 #                                                                              #
-#******************************************************************************#
+# **************************************************************************** #
 
 LOG_CLEAR       = \033[2K
 LOG_UP          = \033[A
@@ -26,9 +26,14 @@ LOG_CYAN        = \033[1;36m
 LOG_WHITE       = \033[1;37m
 
 NAME = libft_ls.a
-FLAGS = -Wall -Werror -Wextra
+FLAGS = -Wall -Werror -Wextra -g
 LIB = ./libft/libft.a
 SRCS_NAME = ft_sort.c \
+			ft_error.c \
+			ft_ls_parsing.c \
+			ft_lstarg.c \
+			ft_print.c \
+			ft_pad_l.c \
 			ft_get_info.c
 
 SRCS_PATH		=		srcs/

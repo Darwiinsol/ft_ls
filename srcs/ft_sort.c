@@ -6,11 +6,20 @@
 /*   By: apissier <apissier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/17 12:17:35 by apissier          #+#    #+#             */
-/*   Updated: 2017/05/23 10:26:01 by apissier         ###   ########.fr       */
+/*   Updated: 2017/09/18 16:13:57 by apissier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
+
+t_list			*ft_sort_list(t_list *validarg, char *flags)
+{
+	if (ft_strchr(flags, 'r'))
+		validarg = ft_sort_reverse(validarg);
+	else
+		validarg = ft_sort_by_ascii(validarg);
+	return (validarg);
+}
 
 t_list			*ft_sort_by_ascii(t_list *liste)
 {

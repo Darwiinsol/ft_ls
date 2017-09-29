@@ -6,7 +6,7 @@
 #    By: apissier <apissier@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/23 17:55:27 by apissier          #+#    #+#              #
-#    Updated: 2017/09/18 15:36:47 by apissier         ###   ########.fr        #
+#    Updated: 2017/09/25 15:11:59 by apissier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,6 +78,7 @@ SRC_NAME = ft_atoi.c \
 	ft_strjoinmulti.c \
 	ft_strlcat.c \
 	ft_strlen.c \
+	ft_intlen.c \
 	ft_strmap.c \
 	ft_strmapi.c \
 	ft_strncat.c \

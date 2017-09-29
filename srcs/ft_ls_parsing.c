@@ -6,7 +6,7 @@
 /*   By: apissier <apissier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/14 10:01:50 by apissier          #+#    #+#             */
-/*   Updated: 2017/09/18 16:25:51 by apissier         ###   ########.fr       */
+/*   Updated: 2017/09/29 16:57:20 by apissier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_list			*ft_get_folder(t_list *arglist)
 		{
 			tmp2 = ft_lstnew(tmp->content, ft_strlen(tmp->content) + 1);
 			((char*)tmp->content)[ft_strlen(tmp->content)] = '\0';
-			 ft_lstaddend(&tmplist, tmp2);
+			ft_lstaddend(&tmplist, tmp2);
 		}
 		tmp = tmp->next;
 	}
@@ -52,7 +52,6 @@ t_list			*ft_get_file(t_list *arglist)
 			ft_lstaddend(&tmplist, tmp2);
 		}
 		tmp = tmp->next;
-		ft_printf("|%s\n|", tmp->content);
 	}
 	return (tmplist);
 }

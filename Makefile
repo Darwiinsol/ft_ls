@@ -6,7 +6,7 @@
 #    By: apissier <apissier@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/03/07 10:36:13 by apissier          #+#    #+#              #
-#    Updated: 2017/09/18 15:08:51 by apissier         ###   ########.fr        #
+#    Updated: 2017/09/28 19:24:49 by apissier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,12 +29,16 @@ NAME = libft_ls.a
 FLAGS = -Wall -Werror -Wextra -g
 LIB = ./libft/libft.a
 SRCS_NAME = ft_sort.c \
+			ft_sort_norm.c \
 			ft_error.c \
 			ft_ls_parsing.c \
 			ft_lstarg.c \
 			ft_print.c \
+			ft_print_norm.c \
 			ft_pad_l.c \
-			ft_get_info.c
+			ft_ls_rec_parsing.c \
+			ft_get_info.c \
+			ft_get_info_norm.c
 
 SRCS_PATH		=		srcs/
 SRCS			=		$(addprefix $(SRCS_PATH), $(SRCS_NAME))

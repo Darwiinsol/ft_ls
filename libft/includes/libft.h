@@ -6,7 +6,7 @@
 /*   By: apissier <apissier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/23 17:25:29 by apissier          #+#    #+#             */
-/*   Updated: 2017/09/18 15:36:26 by apissier         ###   ########.fr       */
+/*   Updated: 2017/09/25 15:11:28 by apissier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ char				*ft_strcpy(char *dest, const char *src);
 char				*ft_strdup(const char *s);
 void				ft_striter(char *s, void (*f)(char *));
 size_t				ft_strlen(const char *s);
+int         		ft_intlen(long long nbr);
 char				*ft_strncat(char *dest, const char *src, size_t n);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
 char				*ft_strncpy(char *dest, const char *src, size_t n);

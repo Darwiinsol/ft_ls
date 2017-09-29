@@ -6,7 +6,7 @@
 /*   By: apissier <apissier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/17 12:05:54 by apissier          #+#    #+#             */
-/*   Updated: 2017/09/29 18:49:03 by apissier         ###   ########.fr       */
+/*   Updated: 2017/09/29 19:59:32 by apissier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int					ft_ls_recursive(char *validarg, char *flags)
 	ft_print(filelist, flags);
 	while (folderlist)
 	{
-		newpath = ft_strjoinmulti(validarg, "/", folderlist->content, "");
+		newpath = ft_strjoinmulti(validarg, "/", ((t_ls*)folderlist->content)->name, "");
 		ft_printf("\n%s:\n", newpath);
 		ft_ls_recursive(newpath, flags);
 		folderlist = folderlist->next;

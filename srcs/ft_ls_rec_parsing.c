@@ -6,7 +6,7 @@
 /*   By: apissier <apissier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/28 16:17:42 by apissier          #+#    #+#             */
-/*   Updated: 2017/09/29 18:49:56 by apissier         ###   ########.fr       */
+/*   Updated: 2017/09/29 20:03:32 by apissier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,9 @@ t_list				*ft_get_file_rec(char *validarg, char *flags)
 t_list				*ft_get_folder_rec(char *validarg, char *flags)
 {
 	struct dirent	*info;
+	struct stat     buffer;
 	DIR				*dirpath;
+	t_ls			*pls;
 	t_list			*tmp;
 	t_list			*folderlist;
 
@@ -69,15 +71,20 @@ t_list				*ft_get_folder_rec(char *validarg, char *flags)
 	{
 		while ((info = readdir(dirpath)))
 		{
-			if ((info->d_type == DT_DIR) && !((info->d_name[0]) == '.'))
+			if ((lstat(ft_strjoinmulti(validarg, "/", info->d_name, ""),
+				&buffer) == 0) & ((buffer.st_mode & S_IFMT) == S_IFDIR)
+				& !((info->d_name[0]) == '.'))
 			{
-				tmp = ft_lstnew(info->d_name, ft_strlen(info->d_name) + 1);
-				((char*)tmp->content)[ft_strlen(info->d_name)] = '\0';
+
+				pls = ft_memalloc(sizeof(t_ls));
+				pls->name = ft_strdup(info->d_name);
+				pls->time = buffer.st_mtime;
+				tmp = ft_lstnew(pls, sizeof(t_ls));
 				ft_lstaddend(&folderlist, tmp);
 			}
 		}
 		closedir(dirpath);
-		return (ft_sort_list(folderlist, flags));
+		return (ft_check_sort(folderlist, flags));
 	}
 	return (NULL);
 }
